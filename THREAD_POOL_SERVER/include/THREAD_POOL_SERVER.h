@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,6 +22,9 @@
 #define _EPOLLSIZE 100000
 #define TRUE 1
 #define FALSE 0
+
+int epfd;
+pthread_mutex_t accept_lock; //accept互斥锁
 
 //任务类型
 typedef struct 
@@ -75,7 +79,21 @@ void * thread_manager(void * arg);
 //消费者任务
 void * thread_customer(void * arg);
 //业务实现
-void * business(void *);
+//void * business(void *);
+
+
+//网络初始化
+int thread_server_netinit(void);
+
+//epoll
+int thread_epoll_init(int sockfd);
+int thread_epoll_listen(thread_pool_t *,int);
+
+//业务
+void * Accept_busines(void *);
+void * Response_busines(void *);
+
+
 
 
 

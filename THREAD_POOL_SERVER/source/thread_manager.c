@@ -4,7 +4,7 @@ void * thread_manager(void * arg)
 {
 	thread_pool_t * p = (thread_pool_t *)arg;
 	pthread_detach(pthread_self());
-	
+
 	int alive;
 	int busy;
 	int cur;
@@ -21,7 +21,10 @@ void * thread_manager(void * arg)
 		cur = p->queue_cur;
 		pthread_mutex_unlock(&p->lock);
 
-		printf(">>>>> Thread_Pool_Info:\n\t\tshutdown:%d\n\t\talive:%d\n\t\tbusy:%d\n\t\tidel:%d\n\t\tcur:%d\n\t\tbusy/alive:%.2f%%\n\t\talive/all:%.2f%%\n",p->thread_shutdown,alive,busy,alive-busy,cur,(double)busy/alive*100,(double)alive/p->thread_max*100);
+
+		if(alive){
+			printf(">>>>> Thread_Pool_Info:\n\t\tshutdown:%d\n\t\talive:%d\n\t\tbusy:%d\n\t\tidel:%d\n\t\tcur:%d\n\t\tbusy/alive:%.2f%%\n\t\talive/all:%.2f%%\n",p->thread_shutdown,alive,busy,alive-busy,cur,(double)busy/alive*100,(double)alive/p->thread_max*100);
+		}
 
 		//扩容条件
 		//当前线程数量 大于 空闲线程数量 或 忙线程 占比大于等于70% ， 扩容后线程数小于线程池容量最大值
